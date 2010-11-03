@@ -46,7 +46,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Localization',
     ],
-    url = "http://packages.python.org/django-%s/" % app_name,
+    url = "https://github.com/robcharlwood/django-mothertongue",
     test_suite = 'mothertongue.tests.runtests.runtests',
     zip_safe=False,
 )
