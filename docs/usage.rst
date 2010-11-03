@@ -14,6 +14,7 @@ In order to use mothertongue's model translation you can follow the example code
 
 An example model
 ~~~~~~~~~~~~~~~~~~~~~~
+This demonstrates a model that utilises django-mothertongue to translate two of its fields::
 
     # import stuff we need from django
     from django.db import models
@@ -55,7 +56,7 @@ An example ``admin.py`` file
 
 This basically adds an inline model to the sample model and allows you to add
 a translation for a total of 2 languages (French and Spanish). The languages allowed
-here are the same as those you specified in your settings file
+here are the same as those you specified in your settings file::
 
     # import stuff we need from django
     from django.contrib import admin
@@ -93,7 +94,7 @@ An example ``views.py`` file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example show a very, very simple view and just grabs the first record 
-in the database for translation, just for demonstration purposes.
+in the database for translation, just for demonstration purposes::
 
     # import stuff from django
     from django.shortcuts import render_to_response
@@ -114,10 +115,10 @@ An example template file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~    
 
 This example shows the displaying of the record retrieved in the example view
-and shows you how to use the ``mothertongue_language_nav`` system
+and shows you how to use the ``mothertongue_language_nav`` system::
 
     <h1>django-mothertongue example template</h1>
-
+    
     <h2>Demo navigation</h2>
     <p>Persists current page, state and URL querystring when changing language via this nav</p>
     {% if mothertongue_language_nav %}
@@ -134,6 +135,6 @@ and shows you how to use the ``mothertongue_language_nav`` system
     <h3>{{home_copy.title|safe}}</h3>
     <br/><br/>
     {{home_copy.content|safe}}
-
+    
     <h2>Example link using the django url tag which persists the language prefix</h2>
     <a href="{% url home %}" title="Home" hreflang="{{LANGUAGE_CODE}}">Home</a>

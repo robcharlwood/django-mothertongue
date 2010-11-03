@@ -12,6 +12,6 @@ Release 0.0.5: (2010-20-24):
 Credits
 -------
 
-mothertongue was developed by `Rob Charlwood`_ based on the work by Ben
+mothertongue was developed by Rob Charlwood based on the work by Ben
 Glynn. Special thanks to Thomas Dunham. 
-Currently maintained by `Rob Charlwood`_.
+Currently maintained by Rob Charlwood.
