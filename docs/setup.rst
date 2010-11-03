@@ -24,7 +24,7 @@ to the installed applications list.
 #. Add ``'mothertongue.context_processors.router'`` to
    ``settings.TEMPLATE_CONTEXT_PROCESSORS``::
    
-   TEMPLATE_CONTEXT_PROCESSORS = (
+    TEMPLATE_CONTEXT_PROCESSORS = (
         ...,
         "mothertongue.context_processors.router",
     )
