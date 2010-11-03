@@ -33,6 +33,9 @@ class TestMotherTongue(TestCase):
         # save french translation
         self.t2.save()
         
+        # Create the new request
+        self.rf = RequestFactory()
+        
         
         
 # class to test model constraints
@@ -105,31 +108,32 @@ class TranslationModelsTestCase(TestMotherTongue):
 class MotherTongueContextProcessorTestCase(TestMotherTongue):
     
     # test context processor on urls
-    def test_url(self):
-        
-        # Create the new request
-        rf = RequestFactory()
+    def test_url_en(self):
         
         # create mock request for english
-        request = rf.get('/')
+        request = self.rf.get('/')
         context = RequestContext(request)
         self.assertEqual(context['LANGUAGE_CODE'], 'en')
         self.assertEqual(context['mothertongue_path_lang_prefix'], '/')
         self.assertEqual(context['request'].META['PATH_INFO'], '/')
         self.assertNotEqual(context['mothertongue_language_nav'], '')
         self.assertEqual(context['LANGUAGES'], settings.LANGUAGES)
-        
+
+    def test_url_es(self):
+      
         # Create mock request for spanish
-        request = rf.get('/es/')
+        request = self.rf.get('/es/')
         context = RequestContext(request)
         self.assertEqual(context['LANGUAGE_CODE'], 'es')
         self.assertEqual(context['mothertongue_path_lang_prefix'], '/es/')
         self.assertEqual(context['request'].META['PATH_INFO'], '/es/')
         self.assertNotEqual(context['mothertongue_language_nav'], '')
         self.assertEqual(context['LANGUAGES'], settings.LANGUAGES)
+
+    def test_url_fr(self):
         
         # Create mock request for french
-        request = rf.get('/fr/')
+        request = self.rf.get('/fr/')
         context = RequestContext(request)
         self.assertEqual(context['LANGUAGE_CODE'], 'fr')
         self.assertEqual(context['mothertongue_path_lang_prefix'], '/fr/')
@@ -137,27 +141,28 @@ class MotherTongueContextProcessorTestCase(TestMotherTongue):
         self.assertNotEqual(context['mothertongue_language_nav'], '')
         self.assertEqual(context['LANGUAGES'], settings.LANGUAGES)
     
-    def test_url_with_querystring(self):
-    
-        # Create the new request
-        rf = RequestFactory()
-        
+    def test_url_with_querystring_en(self):
+            
         # create mock request for english
-        request = rf.get('/?page=1&person=robcharlwood')
+        request = self.rf.get('/?page=1&person=robcharlwood')
         context = RequestContext(request)
         self.assertEqual(context['mothertongue_language_nav'][0]['url'], '/?page=1&person=robcharlwood')
         self.assertEqual(context['mothertongue_language_nav'][1]['url'], '/es/?page=1&person=robcharlwood')
         self.assertEqual(context['mothertongue_language_nav'][2]['url'], '/fr/?page=1&person=robcharlwood')
+     
+    def test_url_with_querystring_es(self):
         
         # create mock request for spanish
-        request = rf.get('/es/?page=1&person=robcharlwood')
+        request = self.rf.get('/es/?page=1&person=robcharlwood')
         context = RequestContext(request)
         self.assertEqual(context['mothertongue_language_nav'][0]['url'], '/?page=1&person=robcharlwood')
         self.assertEqual(context['mothertongue_language_nav'][1]['url'], '/es/?page=1&person=robcharlwood')
         self.assertEqual(context['mothertongue_language_nav'][2]['url'], '/fr/?page=1&person=robcharlwood')
+      
+    def test_url_with_querystring_fr(self):
         
         # create mock request for french
-        request = rf.get('/fr/?page=1&person=robcharlwood')
+        request = self.rf.get('/fr/?page=1&person=robcharlwood')
         context = RequestContext(request)
         self.assertEqual(context['mothertongue_language_nav'][0]['url'], '/?page=1&person=robcharlwood')
         self.assertEqual(context['mothertongue_language_nav'][1]['url'], '/es/?page=1&person=robcharlwood')
