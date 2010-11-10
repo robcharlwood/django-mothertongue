@@ -38,11 +38,15 @@ class MothertongueModelTranslate(models.Model):
                 translation_set = get('translation_set')
                 code = translation.get_language()
                 translated_manager = get(translation_set)
-                translated_object = self._translation_cache.get(code,
-                        translated_manager.get(language=code))
-                self._translation_cache[code] = translated_object
-                return getattr(translated_object, name)
+                try:
+                    translated_object = None
+                    translated_object = self._translation_cache[code]
+                except KeyError:
+                    translated_object = translated_manager.get(language=code)
+                finally:
+                    self._translation_cache[code] = translated_object
+                if translated_object:
+                    return getattr(translated_object, name)
             except (ObjectDoesNotExist, AttributeError):
-                return get(name)
-        else:
-            return get(name)
+                pass
+        return get(name)

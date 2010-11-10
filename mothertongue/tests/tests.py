@@ -1,9 +1,11 @@
 # grab stuff we need from django
-from django.test import TestCase
-from django.db import IntegrityError
-from django.utils.translation import activate, get_language, ugettext, ugettext_lazy as _
+from django import db
 from django.conf import settings
+from django.conf import settings
+from django.db import IntegrityError
 from django.template import RequestContext
+from django.test import TestCase
+from django.utils.translation import activate, get_language, ugettext, ugettext_lazy as _
 
 # grab stuff we need from our project
 from mothertongue.tests.models import TestModel, TestModelTranslation
@@ -35,9 +37,11 @@ class TestMotherTongue(TestCase):
         
         # Create the new request
         self.rf = RequestFactory()
-        
-        
-        
+
+    def tearDown(self):
+        activate(settings.LANGUAGE_CODE)
+
+
 # class to test model constraints
 class TranslationModelsTestCase(TestMotherTongue):
 
@@ -168,4 +172,54 @@ class MotherTongueContextProcessorTestCase(TestMotherTongue):
         self.assertEqual(context['mothertongue_language_nav'][1]['url'], '/es/?page=1&person=robcharlwood')
         self.assertEqual(context['mothertongue_language_nav'][2]['url'], '/fr/?page=1&person=robcharlwood')
     
-    
+
+class TestCache(TestMotherTongue):
+    # this approch to testing query counts is largly stolen from the
+    # select_related tests:
+    # (http://www.djangoproject.com/documentation/models/select_related/)
+    def setUp(self):
+        super(TestCache, self).setUp()
+        # The test runner sets settings.DEBUG to False, but we want to
+        # gather queries so we'll set it to True
+        settings.DEBUG = True
+        # this should always be the last thing to happen before the
+        # tests
+        db.reset_queries()
+
+    def tearDown(self):
+        super(TestCache, self).tearDown()
+        settings.DEBUG = False
+
+    def test_model_fetch(self):
+        # getting the model instance hit the DB
+        r = TestModel.objects.get(pk=self.g.pk)
+        self.assertEqual(1, len(db.connection.queries))
+
+    def test_one_field_access(self):
+        # the first field access hits the DB
+        r = TestModel.objects.get(pk=self.g.pk)
+        r.test_field_1
+        self.assertEqual(2, len(db.connection.queries))
+
+    def test_two_access_main(self):
+        # the second field access is cached, so the DB is not hit
+        activate(settings.LANGUAGE_CODE)
+        r = TestModel.objects.get(pk=self.g.pk)
+        r.test_field_1
+        r.test_field_1
+        self.assertEqual(2, len(db.connection.queries))
+
+    def test_two_access_foreign(self):
+        activate('es')
+        r = TestModel.objects.get(pk=self.g.pk)
+        r.test_field_1
+        r.test_field_1
+        self.assertEqual(2, len(db.connection.queries))
+
+    def test_two_access_nonexistent(self):
+        activate('xx')
+        r = TestModel.objects.get(pk=self.g.pk)
+        r.test_field_1
+        r.test_field_1
+        self.assertEqual(2, len(db.connection.queries))
+
