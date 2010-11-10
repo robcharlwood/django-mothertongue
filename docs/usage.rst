@@ -35,7 +35,7 @@ This demonstrates a model that utilises django-mothertongue to translate two of 
         def __unicode__(self):
             return u'%s' % self.title
     
-    # chunks tranlsations model        
+    # chunks translations model
     class GenericPageTranslation(models.Model):
         generic_page_instance = models.ForeignKey('GenericPage', verbose_name=_('generic_page'))
         language = models.CharField(max_length=len(settings.LANGUAGES)-1, choices=settings.LANGUAGES[1:])
