@@ -1,7 +1,6 @@
 # grab stuff we need from django
 from django import db
 from django.conf import settings
-from django.conf import settings
 from django.db import IntegrityError
 from django.template import RequestContext
 from django.test import TestCase
