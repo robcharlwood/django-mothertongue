@@ -1,4 +1,4 @@
-VERSION = (0, 0, 5)
+VERSION = (0, 0, 6)
 AUTHOR = "Rob Charlwood"
 COPYRIGHT = "2010"
 PROJECT_NAME = "mothertongue"
