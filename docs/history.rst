@@ -13,5 +13,5 @@ Credits
 -------
 
 mothertongue was developed by Rob Charlwood based on the work by Ben
-Glynn. Special thanks to Thomas Dunham. 
+Glynn. Special thanks to Thomas Dunham and Michał Sałaban. 
 Currently maintained by Rob Charlwood.
