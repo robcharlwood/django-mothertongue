@@ -1,3 +1,5 @@
+## This package is now deprecated and no longer actively maintained. Package will remain here for archive purposes and to ensure that anybody still running this code will be able to access the master fork.
+
 This light-weight translation application is designed to simplify the process of creating multi-lingual websites and serving appropriate content in Django.
 
 Copyright (C) 2010 Rob Charlwood
